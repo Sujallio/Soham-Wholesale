@@ -5,7 +5,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
 import ProductCard from '@/components/site/product-card';
 import Reveal from '@/components/site/reveal';
-import { CATEGORIES, getProductsByCategory } from '@/lib/data/products';
+import {
+  CATEGORIES,
+  JEANS_FITS,
+  getProductsByCategory,
+  getProductsByJeansFit,
+} from '@/lib/data/products';
 import { cn } from '@/lib/utils';
 
 const PILLS = [{ slug: 'all', name: 'All' }, ...CATEGORIES.map((c) => ({ slug: c.slug, name: c.name }))];
@@ -14,6 +19,7 @@ function ProductsView() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get('category') || 'all';
+  const activeJeansFit = searchParams.get('fit') || 'all';
   const [query, setQuery] = useState('');
   const [debounced, setDebounced] = useState('');
 
@@ -23,7 +29,10 @@ function ProductsView() {
   }, [query]);
 
   const products = useMemo(() => {
-    let list = getProductsByCategory(activeCategory);
+    let list =
+      activeCategory === 'jeans'
+        ? getProductsByJeansFit(activeJeansFit)
+        : getProductsByCategory(activeCategory);
     if (debounced) {
       list = list.filter(
         (p) =>
@@ -33,12 +42,22 @@ function ProductsView() {
       );
     }
     return list;
-  }, [activeCategory, debounced]);
+  }, [activeCategory, activeJeansFit, debounced]);
 
   const setCategory = (slug) => {
     const params = new URLSearchParams(searchParams.toString());
     if (slug === 'all') params.delete('category');
     else params.set('category', slug);
+    params.delete('fit');
+    const qs = params.toString();
+    router.push(qs ? `/products?${qs}` : '/products', { scroll: false });
+  };
+
+  const setJeansFit = (slug) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('category', 'jeans');
+    if (slug === 'all') params.delete('fit');
+    else params.set('fit', slug);
     const qs = params.toString();
     router.push(qs ? `/products?${qs}` : '/products', { scroll: false });
   };
@@ -76,6 +95,26 @@ function ProductsView() {
               />
             </div>
           </div>
+          {activeCategory === 'jeans' && (
+            <div className="mx-auto max-w-7xl px-4 pb-3 sm:px-6 lg:px-8">
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {JEANS_FITS.map((fit) => (
+                  <button
+                    key={fit.slug}
+                    onClick={() => setJeansFit(fit.slug)}
+                    className={cn(
+                      'shrink-0 rounded-none border px-3 py-2 text-[10px] font-medium uppercase tracking-widest transition-colors',
+                      activeJeansFit === fit.slug
+                        ? 'border-foreground bg-foreground text-background'
+                        : 'border-border text-muted-foreground hover:text-foreground'
+                    )}
+                  >
+                    {fit.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

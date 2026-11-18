@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, use } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Check, Plus, MessageCircle, ArrowRight, ChevronRight } from 'lucide-react';
@@ -16,7 +16,7 @@ import { buildQuickEnquiry, openWhatsApp } from '@/lib/whatsapp';
 import { cn } from '@/lib/utils';
 
 export default function ProductDetailPage({ params }) {
-  const { slug } = use(params);
+  const { slug } = params;
   const product = getProductById(slug);
   if (!product) notFound();
 

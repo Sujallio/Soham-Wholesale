@@ -12,7 +12,7 @@ import { whatsappUrl } from '@/lib/whatsapp';
 const HERO_IMG =
   'https://images.pexels.com/photos/6717035/pexels-photo-6717035.jpeg?auto=compress&cs=tinysrgb&w=1600';
 const WHOLESALE_IMG =
-  'https://images.pexels.com/photos/18699670/pexels-photo-18699670.jpeg?auto=compress&cs=tinysrgb&w=1200';
+  '/images/mens-office-formal-pant.png';
 
 const TRUST = [
   { icon: Factory, title: 'Manufacturer Direct', desc: 'Sourced straight from our manufacturing unit — no middlemen, consistent quality.' },
@@ -75,7 +75,7 @@ export default function HomePage() {
         <div className="absolute inset-x-0 bottom-0 hidden border-t border-white/10 bg-black/20 py-4 backdrop-blur-sm md:block">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-8 text-[11px] uppercase tracking-widest text-white/60">
             <span>Manufacturer &amp; Wholesale Supplier</span>
-            <span>9 Products · 3 Categories</span>
+            <span>11 Products · 3 Categories</span>
             <span>Est. Ahmedabad</span>
           </div>
         </div>
@@ -210,7 +210,7 @@ export default function HomePage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={WHOLESALE_IMG}
-                alt="Wholesale garment rack"
+                alt="Men's office formal pants"
                 loading="lazy"
                 className="h-full w-full object-cover"
               />
